@@ -1,7 +1,6 @@
 package com.recallq.drilldown.ui.service;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.recallq.drilldown.ui.DashboardServlet;
@@ -12,11 +11,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -158,15 +157,23 @@ public class SearchResultsService {
         try {
             SolrQuery query = new SolrQuery();
             query.setQuery("*:*")
+            //.addFilterQuery("status:200")
                     .addNumericRangeFacet("time_local", timeAxis.getStart(), timeAxis.getEnd(), timeAxis.getGap())
+                    .addFilterQuery("time_local:[" + timeAxis.getStart() + " TO *]")
                     .addFacetPivotField("status,request-method")
                     .addFacetPivotField("request-method,status")
                     .setFacetSort("index");
 
+            if (StringUtils.isNotEmpty(requestSearchTerm)) {
+                query.addFilterQuery("request-url:*" + requestSearchTerm + "*");
+            }
             QueryResponse rsp = server.query(query);
 
             SolrDocumentList docs = rsp.getResults();
-
+            long totalCount = docs.getNumFound();
+            
+            results.put("totalCount", new Long(totalCount));
+            
             JsonArray dataSets = new JsonArray();
             JsonObject dataSet = new JsonObject();
             dataSet.addProperty("key", "Cumulative Return");

@@ -1,4 +1,3 @@
-
 package com.recallq.drilldown.ui;
 
 import com.google.gson.Gson;
@@ -14,8 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Controller for the ajax action that returns JSON after hitting the "Search" button.
- * 
+ * Controller for the ajax action that returns JSON after hitting the "Search"
+ * button.
+ *
  * @author Jeroen De Swaef <j@recallq.com>
  */
 public class SearchServlet extends CommonDrillDownServlet {
@@ -32,7 +32,10 @@ public class SearchServlet extends CommonDrillDownServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/json;charset=UTF-8");
-        SearchResultsService service = super.getSearchService();
+        String requestLike = new String();
+        if (request.getParameterMap().containsKey("requestLike")) {
+            requestLike = request.getParameter("requestLike");
+        }
 
         TimeRangeType selectedTimeRange;
         if (request.getParameterMap().containsKey("timeRange")) {
@@ -40,9 +43,10 @@ public class SearchServlet extends CommonDrillDownServlet {
         } else {
             selectedTimeRange = TimeRangeType.LAST_WEEK;
         }
-        
+
+        SearchResultsService service = super.getSearchService();
         // default values
-        Map<String, Object> results = service.getResults(new String(), selectedTimeRange);
+        Map<String, Object> results = service.getResults(requestLike, selectedTimeRange);
 
         JsonObject returnObj = new JsonObject();
 
@@ -52,6 +56,8 @@ public class SearchServlet extends CommonDrillDownServlet {
 
                 returnObj.add(resultEntry.getKey(), (JsonElement) resultEntry.getValue());
 
+            } else if (resultEntry.getValue() instanceof Long) {
+                returnObj.addProperty(resultEntry.getKey(), (Long) resultEntry.getValue());
             }
         }
         Gson gson = new Gson();

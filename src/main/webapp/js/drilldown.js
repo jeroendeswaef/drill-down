@@ -57,7 +57,7 @@ $(document).ready(function() {
                 message: obj.sunBurstData,
                 time: new Date()
             });
-
+            $("#totalRequestCount").html(obj.totalCount);
         }
     });
 

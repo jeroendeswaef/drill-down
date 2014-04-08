@@ -72,6 +72,7 @@
                 </div>
             </div>
             <div class="row">
+                <h3><span id="totalRequestCount">${totalCount}</span> requests found</h3>
                 <div class="col-lg-6">
                     <div id="chart1" class='with-3d-shadow with-transitions'>
                         <svg></svg>
