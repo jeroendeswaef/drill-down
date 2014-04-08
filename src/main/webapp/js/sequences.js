@@ -53,9 +53,13 @@ function initSunBurst(root) {
         var colors = {
             "200": "#339213",
             "304": "#8441A5",
+            "302": "#8441A5",
+            "400": "#D60030",
+            "403": "#D60030",
             "404": "#D60030",
-            "get": "#0E0E0E",
-            "post": "#EE6000"
+            "javascript": "#006BD6",
+            "css": "#8441A5",
+            "php": "#EE6000"
         };
 
         // Total size of all segments; we set this later, after loading the data.
@@ -119,7 +123,7 @@ function initSunBurst(root) {
                     .data(nodes)
                     .enter().append("svg:path")
                     .attr("display", function(d) {
-                        return d.depth ? null : "none";
+                        return (d.depth && d.name !== 'other') ? null : "none";
                     })
                     .attr("d", arc)
                     .attr("fill-rule", "evenodd")

@@ -32,6 +32,6 @@
     </context-param>
     <context-param>
         <param-name>solrPassword</param-name>
-        <param-value>[redacted] </param-value>
+        <param-value>1ndovina</param-value>
     </context-param>
 </web-app>

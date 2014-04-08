@@ -160,10 +160,10 @@ public class SearchResultsService {
             //.addFilterQuery("status:200")
                     .addNumericRangeFacet("time_local", timeAxis.getStart(), timeAxis.getEnd(), timeAxis.getGap())
                     .addFilterQuery("time_local:[" + timeAxis.getStart() + " TO *]")
-                    .addFacetPivotField("status,request-method")
-                    .addFacetPivotField("request-method,status")
+                    .addFacetPivotField("status,request-cat")
+                    //.addFacetPivotField("request-method,status")
                     .setFacetSort("index");
-
+                    
             if (StringUtils.isNotEmpty(requestSearchTerm)) {
                 query.addFilterQuery("request-url:*" + requestSearchTerm + "*");
             }
@@ -195,7 +195,7 @@ public class SearchResultsService {
             JsonObject sunBurstData = new JsonObject();
             sunBurstData.addProperty("name", "root");
 
-            List<PivotField> facetPivot = rsp.getFacetPivot().get("status,request-method");
+            List<PivotField> facetPivot = rsp.getFacetPivot().get("status,request-cat");
             recursiveAddChildData(facetPivot, sunBurstData);
             /*JsonArray sunBustDataChildren = new JsonArray();
             List<PivotField> facetPivot = rsp.getFacetPivot().get("status,request-method");
