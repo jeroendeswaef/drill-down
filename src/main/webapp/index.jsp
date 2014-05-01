@@ -38,9 +38,41 @@
                   of course 1 pixel for the entire chart would not be very useful, BUT should not have errors
                 */
             }
+            .navbar-brand span {
+                text-transform: uppercase;
+            }
+            .navbar-brand .recall, .navbar-brand .queue, navbar-brand .sep {
+                font-weight: bold;
+            }
+            .navbar-brand .sep {
+                padding-left: 0.5em;
+                padding-right: 0.5em;
+            }
+            .navbar-brand .queue {
+                color: orange;
+            }
         </style>
     </head>
     <body>
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <span class="recall">Recall</span><span class="queue">Q</span><span class="sep">&middot;</span><span>Stats</span>
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+           
+                <ul class="nav navbar-nav">
+                    <li><a href="http://www.recallq.com/drilldown">About</a></li>
+                </ul>
+            </div>
+        </nav>
         <!-- SOLR query used: ${query} -->
         <div class="container">
             <div class="row">
@@ -49,7 +81,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">Time range</label>
                             <div class="col-sm-8">
-                                <select name="timeRange" class="selectpicker form-control">
+                                <select name="timeRange" class="form-control">
                                     <option selected="selected" value="LAST_WEEK">Last week</option>
                                     <option value="LAST_MONTH">Last month</option>
                                 </select>
@@ -58,7 +90,7 @@
                         <div class="form-group">
                             <label for="requestLike" class="col-sm-4 control-label">Request contains</label>
                             <div class="col-sm-8">
-                                <input type="text" name="requestLike" class="form-control" id="requestLike">
+                                <input type="text" name="requestLike" class="form-control" id="requestLike" data-toggle="tooltip" data-placement="right" title="Try 'w00tw00t'">
                             </div>
                         </div>
                         <div class="form-group">
@@ -74,19 +106,22 @@
             <div class="row">
                 <h3><span id="totalRequestCount">${totalCount}</span> requests found</h3>
                 <div class="col-lg-6">
+                    <h4>Requests over time</h4>
                     <div id="chart1" class='with-3d-shadow with-transitions'>
                         <svg></svg>
                     </div>
                 </div>
+                
                 <div id="requestSunBurst" class="col-lg-6">
+                     <h4>Request types with HTTP responses</h4>
                     <!--<div id="main">-->
-                        <div id="sequence"></div>
-                        <div class="chart" chart="requestSunBurst">
-                            <!--<div id="explanation" style="visibility: hidden;">
-                                <span id="percentage"></span><br/>
-                                
-                            </div>-->
-                        </div>
+                    <div id="sequence"></div>
+                    <div class="chart" chart="requestSunBurst">
+                        <!--<div id="explanation" style="visibility: hidden;">
+                            <span id="percentage"></span><br/>
+                            
+                        </div>-->
+                    </div>
                     <!--</div>-->
                     <!--<div id="sidebar">
                         <input type="checkbox" id="togglelegend"> Legend<br/>
@@ -128,10 +163,13 @@
         var sunBurstData = JSON.parse(document.getElementById("sunBurstData").innerHTML);
         initSunBurst(window);
         var sunBurst = new SunBurst("requestSunBurst", sunBurstData);
-        nv.utils.windowResize(function() { sunBurst.refresh() });
+        nv.utils.windowResize(function() {
+            sunBurst.refresh()
+        });
         $(document).on("cartDataChanged", function(e) {
             sunBurst.setData(e.message);
         });
+        $("#requestLike").tooltip({});
     </script> 
 
 </html>
