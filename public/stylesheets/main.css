@@ -1,0 +1,35 @@
+.searchForm {
+    max-width: 700px;
+}
+body {
+    *overflow-y:scroll;
+}
+
+text {
+    *font: 12px sans-serif;
+}
+#chart1 {
+    height: 300px;
+    *width: 500px;
+    margin: 10px;
+    min-width: 100px;
+    min-height: 100px;
+    /*
+     Minimum height and width is a good idea to prevent negative SVG dimensions...
+     For example width should be =< margin.left + margin.right + 1,
+     of course 1 pixel for the entire chart would not be very useful, BUT should not have errors
+     */
+}
+.navbar-brand span {
+    text-transform: uppercase;
+}
+.navbar-brand .recall, .navbar-brand .queue, navbar-brand .sep {
+    font-weight: bold;
+}
+.navbar-brand .sep {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+.navbar-brand .queue {
+    color: orange;
+}
